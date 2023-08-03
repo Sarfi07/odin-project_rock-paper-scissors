@@ -6,7 +6,35 @@ function getComputerChoice() {
     return choices[randomNumber];
 };
 
-function playRound(playerSelection, computerSelection, choices) {
+// function getPlayerchoice() {
+//     let choices = ['rock', 'paper', 'scissor'];
+//     let rock = document.getElementById('rock');
+//     let paper = document.getElementById('paper');
+//     let scissor = document.getElementById('scissor');
+
+//     let selection = '';
+
+//     // add eventListener to the button
+//     rock.addEventListener('click', () => {
+//         console.log(rock);
+//         selection = choices[0]
+//     });
+
+//     paper.addEventListener('click', () => {
+//         console.log(paper);
+//         selection = choices[1];
+//     });
+
+//     scissor.addEventListener('click', () => {
+//         console.log(scissor);
+//         selection =  choices[2];
+//     });
+
+//     return selection;
+
+// }
+
+function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase();
     computerSelection = computerSelection.toLowerCase();
 
@@ -21,15 +49,6 @@ function playRound(playerSelection, computerSelection, choices) {
     
 }
 
-function selectionToNumber(selection) {
-    if (selection === 'rock') {
-        return 0;
-    } else if (selection === 'paper') {
-        return 1;
-    } else if (selection === "scissor") {
-        return 2;
-    }
-}
 
 function roundResult(playerChoice, computerChoice) {
     if (playerChoice == 'rock' && computerChoice == 'scissor') {
@@ -58,32 +77,37 @@ function roundResult(playerChoice, computerChoice) {
 
 }
 
-function capitalize(str) {
-    let str2 = str.charAt(0).toUpperCase() + str.slice(1);
 
-    return str2;
-}
 
 
 function game() {
     console.log("Let's Play!");
+    
+    function capitalize(str) {
+        let str2 = str.charAt(0).toUpperCase() + str.slice(1);
+    
+        return str2;
+    }
+    let resultsDiv = document.querySelector('.results');
 
     let playerScore = 0, computerScore = 0;
     for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt(`Round ${i+1}, Enter your choice here. `);
-
+        // let playerSelection = prompt(`Round ${i+1}, Enter your choice here. `);
+        let playerSelection = getPlayerchoice();
         let computerSelection = getComputerChoice();
 
         let result = playRound(playerSelection, computerSelection);
 
         if (result == 'player') {
             playerScore++;
-            console.log( `Round ${i+1}, You Won! ${playerSelectionCapitalize} beats ${computerSelectionCapitalize}.`);
+
+            resultsDiv.value =  `Round ${i+1}, You Won! ${playerSelectionCapitalize} beats ${computerSelectionCapitalize}.`;
+
         } else if (result == 'computer') {
             computerScore++;
-            console.log(`Round ${i+1}, You Lose! ${computerSelectionCapitalize} beats ${playerSelectionCapitalize}.`);
+            resultsDiv.value = `Round ${i+1}, You Lose! ${computerSelectionCapitalize} beats ${playerSelectionCapitalize}.`;
         } else {
-            console.log(`Round ${i+1}, Draw! Both are equal.`);
+            resultsDiv.value = `Round ${i+1}, Draw! Both are equal.`;
         }
     }
 
@@ -96,10 +120,25 @@ function game() {
     }
 }
 
-let winner = game();
+// let winner = game();
 
-if (winner == 'Player' || winner == 'Computer') {
-    console.log(`Winner: ${winner}`)
-} else {
-    console.log("Game Drawn! But well played.")
-}
+// if (winner == 'Player' || winner == 'Computer') {
+//     console.log(`Winner: ${winner}`)
+// } else {
+//     console.log("Game Drawn! But well played.")
+// }
+
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+    let player_selected = button.dataset.selection;
+    let computer_selected = getComputerChoice();
+    let result = playRound(player_selected, computer_selected);
+    console.log(result);
+    let result_div = document.createElement('div')
+    result_div.textContent = result;
+    document.body.appendChild(result_div);
+    });
+})
+
